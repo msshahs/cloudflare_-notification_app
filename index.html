@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Feed</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container" data-flex>
+        <!-- Notification Form -->
+        <form id="notification-form" data-notification-generation-node>
+            <h2>Create Notification</h2>
+            <textarea id="notification-message" placeholder="Message..." required></textarea>
+            <select id="notification-type" required>
+                <option value="" disabled selected>Choose Type</option>
+                <option value="alert">Alert</option>
+                <option value="info">Info</option>
+                <option value="success">Success</option>
+            </select>
+            <button type="button" id="send-notification-btn" aria-label="Button to send notifications">Send</button>
+        </form>
+
+        <!-- Notification Feed -->
+        <div id="notification-feed" accesskey="F"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
