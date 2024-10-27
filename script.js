@@ -4,8 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const typeSelect = document.getElementById('notification-type');
     const notificationFeed = document.getElementById('notification-feed');
 
-    // Submit notification
-    document.getElementById('send-notification-btn').addEventListener('click', (event) => {
+    // API URL (replace with actual URL)
+    const API_BASE_URL = "https://my-first-worker.meethshah663.workers.dev";
+
+    // Submit Notification
+    document.getElementById('send-notification-btn').addEventListener('click', async (event) => {
         event.preventDefault();
 
         const message = messageInput.value.trim();
@@ -16,43 +19,83 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Simulate backend submission
-        const timestamp = new Date().toLocaleString('en-US', {
-            day: '2-digit', month: 'short', year: 'numeric',
-            hour: 'numeric', minute: '2-digit', hour12: true
-        });
-
-        createNotification(message, type, timestamp);
-
-        // Clear form fields after submission
-        messageInput.value = '';
-        typeSelect.value = '';
+        try {
+            await createNotification({ type, content: { text: message }, read: false });
+            messageInput.value = '';
+            typeSelect.value = '';
+            fetchNotifications(); // Refresh feed
+        } catch (error) {
+            console.error('Error creating notification:', error);
+        }
     });
 
-    // Function to create notification card
-    function createNotification(message, type, timestamp) {
-        const notificationCard = document.createElement('div');
-        notificationCard.classList.add('notification-card', type);
+    // Create Notification API
+    async function createNotification(notification) {
+        const response = await fetch(`${API_BASE_URL}/api/notifications`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify([notification]),
+        });
 
-        const messageParagraph = document.createElement('p');
-        messageParagraph.classList.add('notification-message');
-        messageParagraph.textContent = message;
+        if (!response.ok) throw new Error('Failed to create notification');
 
-        const timestampDiv = document.createElement('div');
-        timestampDiv.classList.add('notification-timestamp');
-        timestampDiv.textContent = timestamp;
-
-        notificationCard.appendChild(messageParagraph);
-        notificationCard.appendChild(timestampDiv);
-        notificationFeed.prepend(notificationCard);
+        return await response.json();
     }
 
-    // Auto-update notifications every 4 seconds (Extra Credit)
-    setInterval(fetchNotifications, 4000);
+    // Fetch Notifications API
+    async function fetchNotifications() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/notifications`);
+            if (!response.ok) throw new Error('Failed to fetch notifications');
 
-    function fetchNotifications() {
-        // Simulate fetching notifications from backend
-        // This is where you'd make an API call in a real application
-        console.log("Fetching new notifications...");
+            const notifications = await response.json();
+            renderNotifications(notifications);
+        } catch (error) {
+            console.error('Error fetching notifications:', error);
+        }
     }
+
+    // Delete All Notifications API
+    async function deleteAllNotifications() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/notifications`, { method: 'DELETE' });
+            if (!response.ok) throw new Error('Failed to delete notifications');
+
+            alert("Notifications deleted successfully!");
+            fetchNotifications(); // Refresh feed
+        } catch (error) {
+            console.error('Error deleting notifications:', error);
+        }
+    }
+
+    // Render Notifications on the frontend
+    function renderNotifications(notifications) {
+        notificationFeed.innerHTML = ''; // Clear existing notifications
+
+        notifications.forEach(notification => {
+            const notificationCard = document.createElement('div');
+            notificationCard.classList.add('notification-card', notification.type);
+
+            const messageParagraph = document.createElement('p');
+            messageParagraph.classList.add('notification-message');
+            messageParagraph.textContent = notification.content.text;
+
+            const timestampDiv = document.createElement('div');
+            timestampDiv.classList.add('notification-timestamp');
+            timestampDiv.textContent = new Date(notification.timestamp).toLocaleString('en-US', {
+                day: '2-digit', month: 'short', year: 'numeric',
+                hour: 'numeric', minute: '2-digit', hour12: true
+            });
+
+            notificationCard.appendChild(messageParagraph);
+            notificationCard.appendChild(timestampDiv);
+            notificationFeed.prepend(notificationCard);
+        });
+    }
+
+    // Auto-update notifications every 4 seconds
+    // setInterval(fetchNotifications, 4000);
+
+    // Initial Fetch
+    fetchNotifications();
 });
