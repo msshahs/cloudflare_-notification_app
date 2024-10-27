@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // API URL (replace with actual URL)
     const API_BASE_URL = "https://my-first-worker.meethshah663.workers.dev";
+    // const API_BASE_URL = "http://localhost:8787";
+
 
     // Submit Notification
     document.getElementById('send-notification-btn').addEventListener('click', async (event) => {
@@ -33,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function createNotification(notification) {
         const response = await fetch(`${API_BASE_URL}/api/notifications`, {
             method: 'POST',
+            mode: 'cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify([notification]),
         });
@@ -94,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Auto-update notifications every 4 seconds
-    // setInterval(fetchNotifications, 4000);
+    setInterval(fetchNotifications, 4000);
 
     // Initial Fetch
     fetchNotifications();

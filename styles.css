@@ -6,7 +6,7 @@ body {
 .container {
   display: flex;
   gap: 20px;
-  padding: 20px;
+  width: 100%;
 }
 
 /* Form Styles */
@@ -14,6 +14,7 @@ body {
   border: 1px solid #ccc;
   padding: 20px;
   width: 300px;
+  flex: 1;
 }
 
 #notification-form h2 {
@@ -52,6 +53,7 @@ body {
   overflow-y: auto;
   width: 300px;
   padding: 10px;
+  flex: 1;
 }
 
 .notification-card {
@@ -90,5 +92,10 @@ body {
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
+  }
+  #notification-form,
+  #notification-feed {
+    width: 90%;
+    flex: none;
   }
 }
