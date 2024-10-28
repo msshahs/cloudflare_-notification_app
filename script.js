@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Auto-update notifications every 4 seconds
-    setInterval(fetchNotifications, 4000);
+    // setInterval(fetchNotifications, 4000);
 
     // Initial Fetch
     fetchNotifications();

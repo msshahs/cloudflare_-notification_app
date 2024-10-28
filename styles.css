@@ -15,6 +15,7 @@ body {
   padding: 20px;
   width: 300px;
   flex: 1;
+  border-radius: 10px;
 }
 
 #notification-form h2 {
@@ -26,11 +27,13 @@ body {
   height: 100px;
   margin-bottom: 10px;
   resize: none;
+  border-radius: 5px;
 }
 
 #notification-type {
   width: 100%;
   margin-bottom: 10px;
+  border-radius: 5px;
 }
 
 #send-notification-btn {
@@ -40,6 +43,7 @@ body {
   color: white;
   border: none;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 #send-notification-btn:hover {
@@ -54,16 +58,16 @@ body {
   width: 300px;
   padding: 10px;
   flex: 1;
+  border-radius: 10px;
 }
 
 .notification-card {
-  padding: 10px;
   margin-bottom: 10px;
   height: 70px;
-  border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding-left: 5px;
 }
 
 .notification-message {
